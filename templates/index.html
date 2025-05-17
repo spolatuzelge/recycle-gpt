@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAHİ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header-image">
+        <img src="static/dahi.png" alt="DAHİ">
+    </div>
+    <div class="container">
+        <form id="recycleForm" class="form-container">
+            <label for="material" class="left-label">Geri Dönüştürülebilir Malzeme Girin:</label>
+            <div class="input-wrapper">
+                <input type="text" id="material" name="material" placeholder="Malzemeleri buraya yazınız. Örn; pet şişe" required>
+                <!-- Geri dönüşüm simgesi koyalm -->
+                <span class="input-icon">♻️</span>
+            </div>
+            <button type="submit">DÖNÜŞTÜR</button>
+        </form>
+
+        <div id="results" style="margin-top: 20px;">
+            <!-- Sonuçlar burada görüntülenecek -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("recycleForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Sayfanın yenilenmesini engelle
+
+            // Kullanıcıdan malzeme bilgisini al
+            const material = document.getElementById("material").value;
+
+            // Sonuçlar kısmını temizle
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Önceki sonuçları sil
+
+            try {
+                // API'ye istek gönder
+                const response = await fetch(`/get-products?material=${encodeURIComponent(material)}`);
+                const data = await response.json();
+
+                // Yeni sonuçları ekle
+                //resultsDiv.innerHTML = "<h2>Sonuçlar:</h2>";
+                if (data.products.length > 0) {
+                    const ul = document.createElement("ul");
+                    data.products.forEach(product => {
+                        if (product.trim() !== "") { // Boş satırları filtrele
+                            const li = document.createElement("li");
+                            li.textContent = product;
+                            ul.appendChild(li);
+                        }
+                    });
+                    resultsDiv.appendChild(ul);
+                } else {
+                    resultsDiv.innerHTML += "<p>Sonuç bulunamadı.</p>";
+                }
+            } catch (error) {
+                console.error("Hata:", error);
+                resultsDiv.innerHTML = "<p>Bir hata oluştu. Lütfen tekrar deneyin.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
