@@ -1,5 +1,5 @@
 
-# ♻️ DAHİ: Geri Dönüşümden Ürün Önerici Chatbot
+# ♻️  Geri Dönüşümden Ürün Önerici Chatbot
 
 Bu proje geri dönüştürülebilir malzemeleri kullanarak neler üretilebileceğini öneren yapay zekâ destekli bir web uygulamasıdır.  
 Kullanıcıdan aldığı malzeme bilgisine göre, Google Gemini modeli ile ürün önerileri sunar. Uygulama tamamen Türkçe arayüzlüdür.
